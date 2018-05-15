@@ -30,21 +30,23 @@ ovdbWrite [-r] [-rs INT] [-re INT] [-rts FLOAT] [-rsn INT] [-f STRING] [-t] [-e]
 
 ## Filters
 There are a few filters that you can use.
+
 | Filter            | Description
 | ----------------- | -----------------
 | voxelize          | This voxelizes the grid. It makes each voxel look like a cube. Great for a pixelated look. This does increase the filesize greatly.
 | voxelize_small    | This is the same as voxelize, but it creates a smaller filesize. The quality of the effect is lesser, but often enough.
-| resample_<factor> | Change the grid resolution by the specified factor. It uses a quadratic sampler for the resampling.
-| blur_<size>       | Blur the grid using a gaussian blur with the specified size.
+| resample_{factor} | Change the grid resolution by the specified factor. It uses a quadratic sampler for the resampling.
+| blur_{size}       | Blur the grid using a gaussian blur with the specified size.
 
 ## Grid names
 When exporting the grids, these are how they are names.
+
 | Grid name         | Description
 | ----------------- | -----------------
 | density           | This is the standard density grid.
 | emission          | This is the emission / temperature grid.
-| color_<r/g/b>     | This is the color grid. Each channel is its own float grid.
-| velocity_<x/y/z>  | This is the velocity grid. Each component is its own float grid.
+| color_{r/g/b}     | This is the color grid. Each channel is its own float grid.
+| velocity_{x/y/z}  | This is the velocity grid. Each component is its own float grid.
 
 # Installing
 I already have the plugin compiled for Maya 2018 on Windows. If you use a different version or operating system, then you need to recompile it and replace the binary files. Other than that, installing it should be pretty easy.
