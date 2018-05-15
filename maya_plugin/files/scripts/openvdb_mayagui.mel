@@ -1,0 +1,106 @@
+global proc ovdbUIExport(){
+    int $ranged = `checkBoxGrp -q -value1 ovdbUIRange`;
+    int $rangeStart = `intFieldGrp -q -value1 ovdbUIRangeStartEnd`;
+    int $rangeEnd = `intFieldGrp -q -value2 ovdbUIRangeStartEnd`;
+    float $timeStretch = `floatFieldGrp -q -value1 ovdbUITimeStretch`;
+    int $rangeStartNumber = `intFieldGrp -q -value1 ovdbUIRangeStartNumber`;
+    string $filtersText = `scrollField -q -text ovdbUIFilters`;
+    int $textured = `checkBoxGrp -q -value1 ovdbUITexture`;
+    int $color = `checkBoxGrp -q -value1 ovdbUIColor`;
+    int $velocity = `checkBoxGrp -q -value1 ovdbUIVelocity`;
+    int $emission = `checkBoxGrp -q -value1 ovdbUIEmission`;
+    int $transform = `checkBoxGrp -q -value1 ovdbUITransform`;
+    int $verbose = `checkBoxGrp -q -value1 ovdbUIVerbose`;
+    string $fileLoc = `textFieldButtonGrp -q -text ovdbUIOutput`;
+    
+    string $cmd = "ovdbWrite";
+    
+    if($ranged){
+        $cmd += " -r";
+        $cmd += " -rs " + $rangeStart;
+        $cmd += " -re " + $rangeEnd;
+        $cmd += " -rts " + $timeStretch;
+        $cmd += " -rsn " + $rangeStartNumber;
+    }
+    string $filters[];
+    int $numFilters = `tokenize $filtersText "\n" $filters`;
+    
+    for($i = 0; $i < $numFilters; $i++){
+        $cmd += " -filter \"" + $filters[$i] + "\"";
+    }
+    
+    if($textured)
+        $cmd += " -t";
+    
+    if($color)
+        $cmd += " -c";
+    
+    if($velocity)
+        $cmd += " -v";
+    
+    if($emission)
+        $cmd += " -e";
+    
+    if($transform)
+        $cmd += " -tf";
+    
+    if($verbose)
+        $cmd += " -vb";
+    
+    $cmd += " -p";
+    
+    $cmd += " -o \"" + $fileLoc + "\"";
+    
+    eval($cmd);
+}
+
+global proc ovdbUIFileBrowser(){
+    string $basicFilter = "*.vdb";
+    
+    string $result[] = `fileDialog2 -fileFilter $basicFilter -cap "Output location" -fm 0 -okc "Select"`;
+    
+    if(size($result) <= 0)
+        return;
+    
+    textFieldButtonGrp -edit -text $result[0] ovdbUIOutput;
+}
+
+global proc ovdbUI(){
+    if(`window -exists ovdbUIWindow`)
+        deleteUI ovdbUIWindow;
+    window -t "OpenVDB Writer" ovdbUIWindow;
+    
+    frameLayout -l "OpenVDB Writer" -mh 8 -mw 8;
+        columnLayout -adj true -columnAttach "both" 16 -rowSpacing 8;
+            checkBoxGrp -label "Export range" -ann "Enable this when you want to export a range of frames." ovdbUIRange;
+            $rangeStart = int(`playbackOptions -q -minTime`);
+            $rangeEnd = int(`playbackOptions -q -maxTime`);
+            intFieldGrp -numberOfFields 2 -label "Range start-end" -value1 $rangeStart -value2 $rangeEnd -ann "The start and end frame of the range to export. \nThe end frame itself is not exported." ovdbUIRangeStartEnd;
+            floatFieldGrp -label "Time stretch" -value1 1.0 -pre 3 -ann "Stretch time by this factor. Lower than 1.0 means slower, higher than 1.0 means faster. \nThe frame number in the vdb's filename is still a whole number, \nand thus its starting and ending frame number is divided by the time stretch factor. \nIf time stretch is 0.5 and the starting frame is 1, then the filename will start at 2. \nUse File starting number to choose a new starting number for the filename." ovdbUITimeStretch;
+            intFieldGrp -label "File starting number" -value1 -1 -ann "The starting frame number used for the vdb's filename. \nIf it is -1, it uses the start frame (which is divided by the time stretch)." ovdbUIRangeStartNumber;
+            
+            separator -height 8;
+            
+            text -label "Filters (Separate by new line)";
+            scrollField -wordWrap false -editable true -ann "Add the filters to apply here. It applies it from the top down. \nDo not include the '-' or any spaces." ovdbUIFilters;
+            text -al "left" -label "Available filters:\n   - voxelize                     | Make it look 'pixelated'\n   - voxelize_small           | Smaller file size\n   - resample_<factor>  | Quadratic resampling\n   - blur_<size>              | Blur it";
+            
+            separator -height 8;
+            
+            checkBoxGrp -label "Textured" -ann "Use a different method of exporting the data by sampling it. \nThis is slower." ovdbUITexture;
+            checkBoxGrp -label "Color" -ann "Export the final pixel color for a voxel, just as if you render it out. \nTextured needs to be enabled for this." ovdbUIColor;
+            checkBoxGrp -label "Velocity" -ann "Export the velocity grid of the fluid. \nIt does not export velocity data for anything that is not simulated, like textures." ovdbUIVelocity;
+            checkBoxGrp -label "Emission" -ann "Export the temperature grid of the fluid. \nThis is not the emission / incandescence as specified in the shading section." ovdbUIEmission;
+            checkBoxGrp -label "Transform" -ann "Bake the fluid's transform in the vdb file. \nThis is great when you already have the fluid placed correctly." ovdbUITransform;
+            checkBoxGrp -label "Verbose" -ann "Enable this if you want the progress to be printed out into the console." ovdbUIVerbose;
+            
+            separator -height 8;
+            
+            textFieldButtonGrp -label "File (Use '$F' for ranges)" -buttonLabel "..." -buttonCommand ovdbUIFileBrowser -ann "The location and file name to save it to. If it is not an absolute path, it will be relative from the project folder. \nUse '$F' for ranged exports. It will then replace the '$F' with a six digit frame number." ovdbUIOutput;
+            
+            separator -height 8;
+            
+            button -label "Export" -command ovdbUIExport;
+    
+    showWindow ovdbUIWindow;
+}

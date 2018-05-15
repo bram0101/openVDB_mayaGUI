@@ -22,30 +22,30 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D6F25473-E677-4101-8C77-651E6D7DACA3}</ProjectGuid>
     <RootNamespace>openVDBmayaGUI</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -69,7 +69,20 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetExt>.mll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetExt>.mll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.mll</TargetExt>
+    <IncludePath>C:\local\vcpkg\packages\openvdb_x86-windows\include;C:\Program Files\Autodesk\Maya2018\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.mll</TargetExt>
+    <IncludePath>C:\local\vcpkg\packages\openvdb_x86-windows\include;C:\Program Files\Autodesk\Maya2018\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -82,9 +95,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\local\vcpkg\packages\openvdb_x64-windows\include;C:\local\vcpkg\installed\x64-windows\include;C:\Program Files\Autodesk\Maya2018\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/DOPENVDB_3_ABI_COMPATIBLE %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\local\vcpkg\packages\openvdb_x64-windows\lib;C:\local\vcpkg\installed\x64-windows\lib;C:\Program Files\Autodesk\Maya2018\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenMaya.lib;Foundation.lib;openvdb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -106,15 +125,26 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\local\zlib\include;C:\local\ilmbase_build\include;C:\local\boost_1_67_0;C:\local\openvdb-3.2.0\include;C:\Program Files\Autodesk\Maya2018\include;C:\local\tbb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/DOPENVDB_3_ABI_COMPATIBLE /DOPENEXR_DLL %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>NOMINMAX;OPENEXR_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
+      <LanguageStandard>
+      </LanguageStandard>
+      <DisableSpecificWarnings>4275;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\local\boost_1_67_0\stage\lib;C:\local\ilmbase_build\lib;C:\local\openvdb-3.2.0\lib;C:\Program Files\Autodesk\Maya2018\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenMaya.lib;OpenMayaFX.lib;OpenMayaAnim.lib;OpenMayaRender.lib;OpenMayaUI.lib;Foundation.lib;openvdb.lib;Half.lib;libboost_filesystem-vc141-mt-x64-1_67.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="openVDB_mayaGUI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
