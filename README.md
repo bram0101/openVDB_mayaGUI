@@ -10,7 +10,7 @@ To use the UI, use the command `ovdbUI`. This opens up the UI. You can easily sa
 
 Using the command is also quite straight forward.
 ```
-ovdbWrite [-r] [-rs INT] [-re INT] [-rts FLOAT] [-rsn INT] [-f STRING] [-t] [-e] [-c] [-v] [-tf] [-vb] [-p] <-o PATH> [FLUID OBJECTS]
+ovdbWrite [-r] [-rs INT] [-re INT] [-rts FLOAT] [-rsn INT] [-f STRING] [-t] [-e] [-c] [-v] [-tf] [-vb] [-p] <-o PATH> [FLUID OBJECT]
 ```
 | Flag  | Long              | Usage         | Description
 | ----- | ----------------- | ------------- | -----------------
@@ -27,6 +27,7 @@ ovdbWrite [-r] [-rs INT] [-re INT] [-rts FLOAT] [-rsn INT] [-f STRING] [-t] [-e]
 | -vb   | -verbose          | -vb           | If this is enabled, it will print out all the progress information.
 | -p    | -progress         | -p            | If this is enabled, it will try to register a progress window and use that. If there is already one, it will ignore this flag and thus not mess with the existing progress window.
 | -o    | -output           | -o PATH       | Specify the output path to write the file(s) to. If you want to have the frame number be inserted into the filename, like you should when exporing a range, you use `$F` in the name. `$F` will be replaced with a six digit whole number, which is the frame number.
+| OBJ   |                   | Name of fluid | Specify which fluid should be exported. If it is not specified, the current selection will be searched for the first fluid it can find.
 
 ## Filters
 There are a few filters that you can use.
