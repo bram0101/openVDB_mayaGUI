@@ -61,7 +61,8 @@ In the reposity, you have a folder called `maya_plugin`. In here, you find the m
 5. Navigate to your Maya environment file, and open it. On Windows you can find it in `Documents/maya/[VERSION]/Maya.env`.
 6. Add the following line. ```MAYA_MODULE_PATH = [PATH TO FOLDER CONTAINING THE modFile.mod FILE]```
    If there is already a line with `MAYA_MODULE_PATH`, just append the path to the end by placing a `;` between the path and what was already there. ```MAYA_MODULE_PATH = C:/some/stuff;[PATH TO FOLDER CONTAINING THE modFile.mod FILE]```
-7. Done!
+7. Make sure that the plugin `openVDB_mayaGUI.mll` is enabled in the Plug-in Manager window in Maya.
+8. Done!
 
 # Building
 The plugin source code is only one file, which makes it easy to compile it using any tool, since you only need to work with one file.
