@@ -52,15 +52,15 @@ When exporting the grids, these are how they are names.
 # Installing
 I already have the plugin compiled for Maya 2018 on Windows. If you use a different version or operating system, then you need to recompile it and replace the binary files. Other than that, installing it should be pretty easy.
 
-In the reposity, you have a folder called `maya_plugin`. In here, you find the module file and a files folder with all the files needed. A script that manages the UI and a bin folder with the actual plugin file and the libraries needed. These files are what you need.
+In the reposity, you have a directory called `maya_plugin`. In here, you find the module file and a files directory with all the files needed. A script that manages the UI and a bin directory with the actual plugin file and the libraries needed. These files are what you need.
 
 1. Make sure that Maya is not running.
-2. Create a folder somewhere where you know that it will not be removed. For example on Windows `C:/Program Files/openVDB_mayaGUI`.
-3. Place the contents of the folder `maya_plugin` (so not the folder itself), into the just created folder.
-4. If you need to recompile the plugin, you place the new plugin files in `CREATED_FOLDER/files/bin`, thus replacing the old ones.
+2. Create a directory somewhere where you know that it will not be removed. For example on Windows `C:/Program Files/openVDB_mayaGUI`.
+3. Place the contents of the directory `maya_plugin` (so not the directory itself), into the just created directory.
+4. If you need to recompile the plugin, you place the new plugin files in `CREATED_DIRECTORY/files/bin`, thus replacing the old ones.
 5. Navigate to your Maya environment file, and open it. On Windows you can find it in `Documents/maya/[VERSION]/Maya.env`.
-6. Add the following line. ```MAYA_MODULE_PATH = [PATH TO FOLDER CONTAINING THE modFile.mod FILE]```
-   If there is already a line with `MAYA_MODULE_PATH`, just append the path to the end by placing a `;` between the path and what was already there. ```MAYA_MODULE_PATH = C:/some/stuff;[PATH TO FOLDER CONTAINING THE modFile.mod FILE]```
+6. Add the following line. ```MAYA_MODULE_PATH = [PATH TO DIRECTORY CONTAINING THE modFile.mod FILE]```
+   If there is already a line with `MAYA_MODULE_PATH`, just append the path to the end by placing a `;` between the path and what was already there. ```MAYA_MODULE_PATH = C:/some/stuff;[PATH TO DIRECTORY CONTAINING THE modFile.mod FILE]``` Please note that you should use the path to the directory and not to the actual `modFile.mod` file.
 7. Make sure that the plugin `openVDB_mayaGUI.mll` is enabled in the Plug-in Manager window in Maya.
 8. Done!
 
